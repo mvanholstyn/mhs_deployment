@@ -1,0 +1,23 @@
+require File.join(File.dirname(__FILE__), 'vendor', 'plugins', 'lwt_deployment', 'recipes')
+
+set :application, "example"
+set :repository_host, "svn.example.com"
+
+# Used for web.disable and web.enable
+role :web, "example.com"
+# Used for deploy.start, deploy.stop, deploy.restart
+role :app, "example.com"
+# Used for deploy.migrate
+role :db,  "example.com", :primary => true
+
+namespace :crontab do
+	task :remove, :roles => :db, :only => { :primary => true } do
+	  run "crontab -r"
+	end
+	after "deploy:web:disable", "crontab:remove"
+	
+	task :install, :roles => :db, :only => { :primary => true } do
+	  run "crontab #{current_path}/config/cyberpr.crontab"
+	end
+	after "deploy:web:enable", "crontab:install"
+end
