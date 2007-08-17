@@ -8,7 +8,7 @@ require 'mongrel_cluster/recipes'
 set(:rails_env, ENV["RAILS_ENV"] ? ENV["RAILS_ENV"].to_sym : :staging)
 
 # Sets the environment for the mongrel cluster
-set(:mongrel_environment, rails_env)
+set(:mongrel_environment) { rails_env }
 
 # Sets the location to deploy from. Default: trunk
 if tag = ENV["TAG"]
