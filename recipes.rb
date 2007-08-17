@@ -43,17 +43,18 @@ set(:deploy_to) { "/var/www/#{application}/#{rails_env}" }
 # Sets the extra paths to symlink.
 set(:symlinks, [])
 
+set(:use_sudo, false)
+
 # Sets the mongrel_cluster config location. Default: /etc/mongrel_cluster/#{application}/#{rails_env}.yml
 set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
 
 namespace :db do
   namespace :fixtures do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
-    # task :load, :roles => :db, :only => { :primary => true } do
-    #      fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
-    #      run "cd #{current_path} && " +
-    #          "#{rake} RAILS_ENV=#{rails_env} db:fixtures:load #{fixtures}"
-    #    end
+    task :import, :roles => :db, :only => { :primary => true } do
+      fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
+      run "cd #{current_path} && #{rake} RAILS_ENV=#{rails_env} db:fixtures:load #{fixtures}"
+    end
   end
 end
 
