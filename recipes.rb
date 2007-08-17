@@ -1,6 +1,4 @@
 require 'etc'
-# Load the default rails tasks
-require 'deploy'
 # Load the mongrel_cluster tasks
 require 'mongrel_cluster/recipes'
 
@@ -51,11 +49,11 @@ set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
 namespace :db do
   namespace :fixtures do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
-    task :load, :roles => :db, :only => { :primary => true } do
-      fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
-      run "cd #{current_path} && " +
-          "#{rake} RAILS_ENV=#{rails_env} db:fixtures:load #{fixtures}"
-    end
+    # task :load, :roles => :db, :only => { :primary => true } do
+    #      fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
+    #      run "cd #{current_path} && " +
+    #          "#{rake} RAILS_ENV=#{rails_env} db:fixtures:load #{fixtures}"
+    #    end
   end
 end
 
@@ -75,7 +73,7 @@ namespace :deploy do
     cleanup
   end
   
-  desc "Symlinks config/database.yml and all entries in symlinks from #{shared_path}/#{symlink} to #{current_path}/#{symlink}."
+  desc "Symlinks config/database.yml and all entries in symlinks from \#{shared_path}/\#{symlink} to \#{current_path}/\#{symlink}."
   task :symlink_extras, :except => { :no_release => true } do
     run "rm -f #{current_path}/config/database.yml && ln -s #{shared_path}/config/database.yml #{current_path}/config/database.yml"
     symlinks.each do |symlink|
