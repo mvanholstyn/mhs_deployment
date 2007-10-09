@@ -53,7 +53,7 @@ namespace :db do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
     task :import, :roles => :db, :only => { :primary => true } do
       fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
-      run "cd #{current_path} && #{rake} RAILS_ENV=#{rails_env} db:fixtures:load #{fixtures}"
+      run "cd #{current_path} && rake RAILS_ENV=#{rails_env} spec:db:fixtures:load #{fixtures}"
     end
   end
 end
@@ -112,14 +112,18 @@ namespace :deploy do
     configure_mongrel_cluster
     
     # Copy over a virtual host config file
-    run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
-    template = File.read(File.join(File.dirname(__FILE__), "templates", "config", "virtual_host.conf"))
-    result = ERB.new(template).result(binding)
-    put result, "/etc/apache2/sites-available/#{application}-#{rails_env}.conf", :mode => 0644
-    run "rm -f /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf && ln -s /etc/apache2/sites-available/#{application}-#{rails_env}.conf /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf"
+    # run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
+    # template = File.read(File.join(File.dirname(__FILE__), "templates", "config", "virtual_host.conf"))
+    # result = ERB.new(template).result(binding)
+    # put result, "/etc/apache2/sites-available/#{application}-#{rails_env}.conf", :mode => 0644
+    # run "rm -f /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf && ln -s /etc/apache2/sites-available/#{application}-#{rails_env}.conf /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf"
   end
   after "deploy:setup", "deploy:setup_extras"
 end
+
+# need root to make 
+#  * /etc/mongrel_cluster
+#  * deploy_to
 
 #dependencies
 #no sudo
