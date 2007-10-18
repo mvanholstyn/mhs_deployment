@@ -59,6 +59,11 @@ set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
 end
 
 namespace :db do
+  desc "Run the mysql shell for the current environment using the configuration defined in database.yml"
+  task :shell do
+    run "cd #{current_path} && rake #{rails_env} db:shell"
+  end
+  
   namespace :fixtures do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
     task :import, :roles => :db, :only => { :primary => true } do
