@@ -51,10 +51,10 @@ set(:use_sudo, false)
 # Sets the mongrel_cluster config location. Default: /etc/mongrel_cluster/#{application}/#{rails_env}.yml
 set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
 
-[:production, :staging].each do |env|
-  desc "Runs the following task(s) in the #{env} environment" 
-  task env do
-    set(:rails_env, env.to_sym)
+[:production, :staging].each do |environment|
+  desc "Runs the following task(s) in the #{environment} environment" 
+  task environment do
+    set(:rails_env, environment)
   end
 end
 
