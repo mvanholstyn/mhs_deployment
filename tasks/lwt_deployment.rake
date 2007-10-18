@@ -10,11 +10,11 @@ namespace :db do
   task :shell do
     configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
     command = ["mysql"]
-    command << "-u#{configuration['username']}" if configuration['username']
-    command << "-p#{configuration['password']}" if configuration['password']
-    command << "-h#{configuration['host']}"     if configuration['host']
-    command << "-P#{configuration['port']}"     if configuration['port']
-    command << configuration['database']        if configuration['database']
+    command << "-u#{configuration['username']}"   if configuration['username']
+    command << "-p'#{configuration['password']}'" if configuration['password']
+    command << "-h#{configuration['host']}"       if configuration['host']
+    command << "-P#{configuration['port']}"       if configuration['port']
+    command << configuration['database']          if configuration['database']
   
     system command.join(" ")
   end
