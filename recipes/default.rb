@@ -63,7 +63,7 @@ namespace :db do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
     task :import, :roles => :db, :only => { :primary => true } do
       fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
-      run "cd #{current_path} && rake RAILS_ENV=#{rails_env} spec:db:fixtures:load #{fixtures}"
+      run "cd #{current_path} && rake #{rails_env} spec:db:fixtures:load #{fixtures}"
     end
   end
 end
