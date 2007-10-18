@@ -51,6 +51,13 @@ set(:use_sudo, false)
 # Sets the mongrel_cluster config location. Default: /etc/mongrel_cluster/#{application}/#{rails_env}.yml
 set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
 
+[:production, :staging].each do |env|
+  desc "Runs the following task(s) in the #{env} environment" 
+  task env do
+    set(:rails_env, env.to_sym)
+  end
+end
+
 namespace :db do
   namespace :fixtures do
     desc "Load fixtures into the current environment's database. Load specific fixtures using FIXTURES=x,y"
