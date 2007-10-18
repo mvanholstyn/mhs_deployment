@@ -60,7 +60,7 @@ end
 
 namespace :db do
   desc "Run the mysql shell for the current environment using the configuration defined in database.yml"
-  task :shell do
+  task :shell, :roles => :db, :only => { :primary => true } do
     run "cd #{current_path} && rake #{rails_env} db:shell"
   end
   
