@@ -61,7 +61,12 @@ end
 namespace :db do
   desc "Run the mysql shell for the current environment using the configuration defined in database.yml"
   task :shell, :roles => :db, :only => { :primary => true } do
-    run "cd #{current_path} && rake #{rails_env} db:shell"
+    input = ''
+    run "cd #{current_path} && rake #{rails_env} db:shell" do |channel, stream, data|
+      next if data.chomp == input.chomp || data.chomp == ''
+      print data
+      channel.send_data(input = $stdin.gets) if data =~ /^(>|\?)>/
+    end
   end
   
   namespace :fixtures do
@@ -69,6 +74,26 @@ namespace :db do
     task :import, :roles => :db, :only => { :primary => true } do
       fixtures = ENV["FIXTURES"] ? "FIXTURES=#{ENV["FIXTURES"]}" : ""
       run "cd #{current_path} && rake #{rails_env} spec:db:fixtures:load #{fixtures}"
+    end
+  end
+end
+
+desc "Console" 
+task :console, :roles => :app do
+  input = ''
+  run "cd #{current_path} && ./script/console #{rails_env}" do |channel, stream, data|
+    next if data.chomp == input.chomp || data.chomp == ''
+    print data
+    channel.send_data(input = $stdin.gets) if data =~ /^(>|\?)>/
+  end
+end
+
+namespace :log do
+  desc "Tail log files" 
+  task :tail, :roles => :app do
+    run "tail -f #{shared_path}/log/#{rails_env}.log" do |channel, stream, data|
+      puts data
+      break if stream == :err    
     end
   end
 end
