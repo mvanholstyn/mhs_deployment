@@ -166,7 +166,6 @@ end
 #  * deploy_to
 
 #dependencies
-#no sudo
 
 # task :backup_database, :roles => :db, :only => { :primary => true } do
 #   run "mysqldump -u ? -p? ? > #{shared_path}/backups/#{Time.now.strftime("%Y%m%d%H%M%S")}.sql"
