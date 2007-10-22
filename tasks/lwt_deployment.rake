@@ -80,16 +80,17 @@ namespace :gems do
     raise "No gem specified" unless gem_name = ENV['GEM']
 
     require 'rubygems'
+    require 'activesupport'
     Gem.manage_gems
     
     if version = ENV['VERSION']
       gem = Gem.cache.search(gem_name, "= #{version}").first
     else
-      gem = Gem.cache.search(gem_name).sort_by { |g| g.version }.last
+      gem = Gem.cache.search(gem_name).sort_by(&:version).last
     end
     
     if gem
-      version = gem.version.version
+      version ||= gem.version.version
     else
       raise "Could not find the gem '#{gem_name}' #{version}"
       # TODO: Auto install the gem?
@@ -112,29 +113,32 @@ namespace :gems do
     mkdir_p vendor_gems_directory
     
     chdir vendor_gems_directory do
+      # TODO: Remove old versions...
       gem.dependencies.each do |dependency|
         Gem::GemRunner.new.run ["unpack", "-v", "#{dependency.version_requirements}", dependency.name ]
       end
-      
       Gem::GemRunner.new.run ["unpack", "-v", "=#{gem.version}", gem_name ]
     end
   end
 
   task :unfreeze do
-    raise "No gem specified" unless gem_name = ENV['GEM']
-    Dir[File.join(RAILS_ROOT, *%W[vendor gems #{gem_name}-*])].each do |gem_directory|
+    raise "No gems specified" unless gem_names = ENV['GEMS']
+    Dir[File.join(RAILS_ROOT, *%W[vendor gems {#{gem_names}}-*])].each do |gem_directory|
       rm_rf gem_directory
     end
   end
 
   task :update do
+    require 'rubygems'
+    require 'activesupport'
+    Gem.manage_gems
+    
     Dir[File.join(RAILS_ROOT, *%w[vendor gems *])].each do |gem_directory|
       match = File.basename(gem_directory).match(/^(.*)-(\d+(?:\.\d+)*)$/)
       gem_name, version = match[1], match[2]
       
-      if newest_gem = Gem.cache.search(gem_name, "> #{version}").sort_by { |g| g.version }.last
+      if newest_gem = Gem.cache.search(gem_name, "> #{version}").sort_by(&:version).last
         ENV['GEM'] = gem_name
-        Rake::Task["gems:unfreeze"].invoke
         Rake::Task["gems:freeze"].invoke
       end
     end
