@@ -122,22 +122,7 @@ namespace :deploy do
     end 
   end
   after "deploy:symlink", "deploy:symlink_extras"
-  
-  desc "Restarts the mongrel_cluster"
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    restart_mongrel_cluster
-  end
-  
-  desc "Starts the mongrel_cluster"
-  task :start, :roles => :app do
-    start_mongrel_cluster
-  end
-  
-  desc "Stops the mongrel_cluster"
-  task :stop, :roles => :app do
-    stop_mongrel_cluster
-  end
-  
+    
   task :setup_extras, :except => { :no_release => true } do
     require 'erb'
     
@@ -149,7 +134,7 @@ namespace :deploy do
     
     # Copy over a mongrel_cluster config file
     run "umask 02 && mkdir -p /etc/mongrel_cluster"
-    configure_mongrel_cluster
+    mongrel.cluster.configure
     
     # Copy over a virtual host config file
     # run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
