@@ -79,7 +79,7 @@ namespace :db do
   namespace :backup do
     desc "Creates a back of the database."
     task :create, :roles => :db, :only => {:primary => true} do
-      run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIRECTORY=#{shared_path}/backups/"
+      run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIR=#{shared_path}/backups/"
     end
     
     # task :remote_to_local, :roles => :db, :only => {:primary => true} do
