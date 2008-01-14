@@ -122,7 +122,7 @@ namespace :deploy do
       update_code
       web.disable
       symlink
-      db.backup
+      db.backup.create
       migrate
     end
 
