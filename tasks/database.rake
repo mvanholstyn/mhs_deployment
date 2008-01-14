@@ -1,4 +1,19 @@
 namespace :db do
+  namespace :data do
+    desc "Load seed fixtures (from db/fixtures) into the current environment's database."
+    task :seed => :environment do
+      require 'active_record/fixtures'
+      Dir.glob(RAILS_ROOT + '/db/fixtures/*.yml').each do |file|
+        Fixtures.create_fixtures('db/fixtures', File.basename(file, '.*'))
+      end
+    end
+  end
+  
+  # Adding db:data:seed to be run automatically when db:migrate is run
+  task :migrate do
+    Rake::Task["db:data:seed"].invoke
+  end
+
   desc "Run the mysql shell for the current environment using the configuration defined in database.yml"
   task :shell do
     configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
