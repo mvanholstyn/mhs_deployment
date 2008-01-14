@@ -77,10 +77,8 @@ namespace :db do
   end
   
   namespace :backup do
-    task :default => :create
-    
     task :create, :roles => :db, :only => {:primary => true} do
-      run "cd #{current_path} && rake #{rails_env} db:backup BACKUP_DIRECTORY=#{shared_path}/backups/"
+      run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIRECTORY=#{shared_path}/backups/"
     end
     
     # task :remote_to_local, :roles => :db, :only => {:primary => true} do

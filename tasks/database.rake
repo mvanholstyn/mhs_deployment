@@ -41,8 +41,6 @@ namespace :db do
   end
   
   namespace :backup do
-    task :default => :create
-    
     task :directory do
       ENV['BACKUP_DIR'] ||= 'backups'
     end
