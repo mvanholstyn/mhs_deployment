@@ -77,6 +77,7 @@ namespace :db do
   end
   
   namespace :backup do
+    desc "Creates a back of the database."
     task :create, :roles => :db, :only => {:primary => true} do
       run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIRECTORY=#{shared_path}/backups/"
     end
@@ -115,7 +116,7 @@ namespace :log do
 end
 
 namespace :deploy do
-  desc "Default deploy task: updates code, disables web, updates symlinks, migrates, restarts web server, enables web, cleans up old releases"
+  desc "Default deploy task: updates code, disables web, updates symlinks, backup database, migrates, restarts web server, enables web, cleans up old releases"
   task :default do
     transaction do
       update_code

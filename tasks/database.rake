@@ -58,8 +58,10 @@ namespace :db do
       ENV['SCHEMA'] = "#{backup}/schema.rb"
     end
   
+    desc "Creates a backup of the database."
     task :create => [:environment, 'db:fixtures:dump', 'db:schema:dump']
-  
+
+    desc "Restores a backup of the database."
     task :restore => [:latest, :environment, 'db:schema:load', 'db:fixtures:load']
   end
 end
