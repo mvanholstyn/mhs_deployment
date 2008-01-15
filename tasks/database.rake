@@ -52,10 +52,12 @@ namespace :db do
   
     task :environment => :directory do
       ENV['VERSION'] ||= Time.now.utc.strftime("%Y%m%d%H%M%S")
-      backup = "#{ENV['BACKUP_DIR']}/#{ENV['VERSION']}"
-      FileUtils.mkdir_p backup
-      ENV['FIXTURES_DIR'] = backup
-      ENV['SCHEMA'] = "#{backup}/schema.rb"
+      db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['VERSION']}/db"
+      fixtures_backup_directory = "#{db_backup_directory}/fixtures"
+      FileUtils.mkdir_p db_backup_directory
+      FileUtils.mkdir_p fixtures_backup_directory
+      ENV['FIXTURES_DIR'] = fixtures_backup_directory
+      ENV['SCHEMA'] = "#{db_backup_directory}/schema.rb"
     end
   
     desc "Creates a backup of the database."

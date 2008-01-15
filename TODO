@@ -2,7 +2,6 @@ Cleanup task for backups
 Asset backup task
 Add ability to push backup somewhere else (ftp)
 
-Move db backups to db folder
 Add :sql format database backup
 get db:shell working
 
