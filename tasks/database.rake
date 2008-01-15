@@ -41,18 +41,13 @@ namespace :db do
   end
   
   namespace :backup do
-    task :directory do
-      ENV['BACKUP_DIR'] ||= 'backups'
-    end
-  
-    task :latest => :directory do
+    task :latest => "backup:directory" do
       last = Dir["#{ENV['BACKUP_DIR']}/*/"].sort.last
-      puts ENV['VERSION'] ||= File.basename(last) if last
+      puts ENV['BACKUP_VERSION'] ||= File.basename(last) if last
     end
   
-    task :environment => :directory do
-      ENV['VERSION'] ||= Time.now.utc.strftime("%Y%m%d%H%M%S")
-      db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['VERSION']}/db"
+    task :environment => ["backup:directory", "backup:version"] do
+      db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
       fixtures_backup_directory = "#{db_backup_directory}/fixtures"
       FileUtils.mkdir_p db_backup_directory
       FileUtils.mkdir_p fixtures_backup_directory
