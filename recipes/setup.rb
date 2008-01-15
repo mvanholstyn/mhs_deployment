@@ -1,13 +1,6 @@
 namespace :deploy do
   task :setup_extras, :except => { :no_release => true } do
-    require 'erb'
-    
-    # Copy over database.yml template
-    run "umask 02 && mkdir -p #{shared_path}/config"
-    template = File.read(File.join(File.dirname(__FILE__), "..", "templates", "config", "database.yml"))
-    result = ERB.new(template).result(binding)
-    put result, "#{shared_path}/config/database.yml", :mode => 0644
-    
+    db.configure
     mongrel.cluster.configure
     
     # Copy over a virtual host config file

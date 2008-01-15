@@ -9,6 +9,15 @@ namespace :db do
     end
   end
   
+  desc "Creates a database.yml file in shared/config. It will prompt for the database password."
+  task :configure do
+    require 'erb'
+    run "umask 02 && mkdir -p #{shared_path}/config"
+    template = File.read(File.join(File.dirname(__FILE__), "..", "templates", "config", "database.yml"))
+    result = ERB.new(template).result(binding)
+    put result, "#{shared_path}/config/database.yml", :mode => 0644
+  end
+  
   namespace :data do
     desc "Load seed fixtures (from db/fixtures) into the current environment's database."
     task :seed, :roles => :db, :only => { :primary => true } do
@@ -32,5 +41,5 @@ namespace :db do
     #   `rm backups/#{latest}.tar.gz`
     #   `rake backup:restore`
     # end
-  end  
+  end
 end
