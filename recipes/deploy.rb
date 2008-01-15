@@ -1,5 +1,5 @@
 namespace :deploy do
-  desc "Default deploy task: updates code, disables web, updates symlinks, backup database, migrates, restarts web server, enables web, cleans up old releases"
+  desc "Default deploy task: updates code, disables web, updates symlinks, backup db, backup assets, migrates, restarts web server, enables web, cleans up old releases"
   task :default do
     transaction do
       update_code
