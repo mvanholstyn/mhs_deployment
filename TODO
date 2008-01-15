@@ -1,8 +1,10 @@
 Cleanup task for backups
 Asset backup task
+Add ability to push backup somewhere else (ftp)
+
 Move db backups to db folder
 Add :sql format database backup
-Add ability to push backup somewhere else (ftp)
+get db:shell working
 
 Setup god/monit scripts
 
@@ -11,12 +13,9 @@ Setup task
  - create logrotate
  - create apache
  - create deploy_to (as root)
-  
-task :helper_demo do
-  buffer = render("maintenance.rhtml", :deadline => ENV['UNTIL'])
-  put buffer, "#{shared_path}/system/maintenance.html", :mode => 0644
-  delete "#{shared_path}/system/maintenance.html"
-end
-
-set :db_user, Capistrano::CLI.ui.ask("database user: ")
-set :db_pass, Capistrano::CLI.password_prompt("database password: ")
+ 
+# run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
+# template = File.read(File.join(File.dirname(__FILE__), "..", "templates", "config", "virtual_host.conf"))
+# result = ERB.new(template).result(binding)
+# put result, "/etc/apache2/sites-available/#{application}-#{rails_env}.conf", :mode => 0644
+# run "rm -f /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf && ln -s /etc/apache2/sites-available/#{application}-#{rails_env}.conf /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf"
