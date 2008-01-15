@@ -6,7 +6,7 @@ Wingnut:
 
 Long Term:
  * gems/dependencies
- * bull backup to dev machine
+ * pull backup to dev machine
     task :remote_to_local, :roles => :db, :only => {:primary => true} do
       latest = capture("cd #{current_path}; rake -s backup:latest BACKUP_DIR=#{backup_path}").strip
       run "tar -C #{backup_path} -czf #{backup_path}/#{latest}.tar.gz #{latest}"
