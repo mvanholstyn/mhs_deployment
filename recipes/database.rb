@@ -30,16 +30,5 @@ namespace :db do
     task :create, :roles => :db, :only => {:primary => true} do
       run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIR=#{shared_path}/backups"
     end
-    
-    # task :remote_to_local, :roles => :db, :only => {:primary => true} do
-    #   latest = capture("cd #{current_path}; rake -s backup:latest BACKUP_DIR=#{backup_path}").strip
-    #   run "tar -C #{backup_path} -czf #{backup_path}/#{latest}.tar.gz #{latest}"
-    #   `mkdir -p backups`
-    #   get "#{backup_path}/#{latest}.tar.gz", "backups/#{latest}.tar.gz"
-    #   `tar -C backups -zxf backups/#{latest}.tar.gz`
-    #   run "rm #{backup_path}/#{latest}.tar.gz"
-    #   `rm backups/#{latest}.tar.gz`
-    #   `rake backup:restore`
-    # end
   end
 end
