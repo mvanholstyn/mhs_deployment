@@ -81,7 +81,7 @@ end
 
 remove_task "db:fixtures:load"
 
-namespace :db do  
+namespace :db do
   namespace :fixtures do
     desc "Load fixtures into the current environment's database.  Load specific fixtures using FIXTURES=x,y"
     task :load => :environment do

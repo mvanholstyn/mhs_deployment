@@ -1,20 +1,19 @@
-Cleanup task for backups
-Asset backup task
-Add ability to push backup somewhere else (ftp)
+Wingnut:
+ * Cleanup task for backups
+ * Asset backup task
+ * Add ability to push backup somewhere else (ftp)
+ * crontab for backups (and logrotate?)
+ * setup god/monit scripts
 
-Add :sql format database backup
-get db:shell working
-
-Setup god/monit scripts
-
-Setup task
- - create database
- - create logrotate
- - create apache
- - create deploy_to (as root)
- 
-# run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
-# template = File.read(File.join(File.dirname(__FILE__), "..", "templates", "config", "virtual_host.conf"))
-# result = ERB.new(template).result(binding)
-# put result, "/etc/apache2/sites-available/#{application}-#{rails_env}.conf", :mode => 0644
-# run "rm -f /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf && ln -s /etc/apache2/sites-available/#{application}-#{rails_env}.conf /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf"
+Long Term:
+ * Add :sql format database backup
+ * get db:shell working
+ * create database
+ * create logrotate
+ * create deploy_to (as root)
+ * create apache vhost
+    run "umask 02 && mkdir -p /etc/apache2/sites-available /etc/apache2/sites-enabled"
+    template = File.read(File.join(File.dirname(__FILE__), "..", "templates", "config", "virtual_host.conf"))
+    result = ERB.new(template).result(binding)
+    put result, "/etc/apache2/sites-available/#{application}-#{rails_env}.conf", :mode => 0644
+    run "rm -f /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf && ln -s /etc/apache2/sites-available/#{application}-#{rails_env}.conf /etc/apache2/sites-enabled/#{application}-#{rails_env}.conf"
