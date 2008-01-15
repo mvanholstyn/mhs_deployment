@@ -1,0 +1,33 @@
+Cleanup task for backups
+Asset backup task
+Move db backups to db folder
+Add :sql format database backup
+Add ability to push backup somewhere else (ftp)
+
+Setup god/monit scripts
+
+Move mongrel_cluster config
+Tasks to create mongrel_cluster/logrotate/apache
+Setup task
+
+
+
+# need root to make 
+#  * /etc/mongrel_cluster
+#  * deploy_to
+
+#dependencies
+
+# task :backup_database, :roles => :db, :only => { :primary => true } do
+#   run "mysqldump -u ? -p? ? > #{shared_path}/backups/#{Time.now.strftime("%Y%m%d%H%M%S")}.sql"
+# end
+  
+# task :helper_demo do
+#   buffer = render("maintenance.rhtml", :deadline => ENV['UNTIL'])
+#   put buffer, "#{shared_path}/system/maintenance.html", :mode => 0644
+#   delete "#{shared_path}/system/maintenance.html"
+# end
+
+# task :copy_production_to_development, :roles => :db, :only => { :primary => true } do
+#   run "mysqldump -u ? -p? ? | mysql -u ? -p? ?"
+# end
