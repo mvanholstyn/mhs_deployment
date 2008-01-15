@@ -2,7 +2,7 @@ Wingnut:
  * Cleanup task for backups
  * Asset backup task
  * Add ability to push backup somewhere else (ftp)
- * crontab for backups (and logrotate?)
+ * crontab for backups
  * setup god/monit scripts
 
 Long Term:
