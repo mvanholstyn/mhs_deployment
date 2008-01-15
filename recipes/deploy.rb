@@ -5,7 +5,7 @@ namespace :deploy do
       update_code
       web.disable
       symlink
-      db.backup.create
+      backup.create
       migrate
     end
 
