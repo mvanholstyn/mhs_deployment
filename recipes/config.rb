@@ -48,5 +48,5 @@ set(:symlinks, [])
 
 set(:use_sudo, false)
 
-# Sets the mongrel_cluster config location. Default: /etc/mongrel_cluster/#{application}/#{rails_env}.yml
-set(:mongrel_conf) { "/etc/mongrel_cluster/#{application}/#{rails_env}.yml" }
+# Sets the mongrel_cluster config location. Default: #{shared_path}/config/mongrel_cluster.yml
+set(:mongrel_conf) { "#{shared_path}/config/mongrel_cluster.yml" }

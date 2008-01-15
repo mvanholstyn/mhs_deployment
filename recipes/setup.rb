@@ -8,8 +8,6 @@ namespace :deploy do
     result = ERB.new(template).result(binding)
     put result, "#{shared_path}/config/database.yml", :mode => 0644
     
-    # Copy over a mongrel_cluster config file
-    run "umask 02 && mkdir -p /etc/mongrel_cluster"
     mongrel.cluster.configure
     
     # Copy over a virtual host config file
