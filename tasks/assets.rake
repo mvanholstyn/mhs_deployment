@@ -1,12 +1,14 @@
 namespace :assets do
   namespace :backup do  
     desc "Creates a backup of the assets."
-    task :create do
-      backup_directory = "#{backup.directory}/#{backup.version}"
+    task :create => ["backup:directory", "backup:version"] do
+      backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}"
 
-      backups.each do |backup|
-        FileUtils.mkdir_p "#{backup_directory}/#{backup}"
-        FileUtils.cp_r "#{current_path}/#{backup}", "#{backup_directory}/#{backup}"
+      ENV["BACKUPS"].to_s.split(",").each do |backup|
+        if File.exist?(backup)
+          FileUtils.mkdir_p "#{backup_directory}/#{File.dirname(backup)}"
+          FileUtils.cp_r backup, "#{backup_directory}/#{File.dirname(backup)}"
+        end
       end
     end
   end
