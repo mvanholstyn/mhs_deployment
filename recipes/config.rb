@@ -46,6 +46,8 @@ set(:deploy_to) { "/var/www/#{application}/#{rails_env}" }
 # Sets the extra paths to symlink.
 set(:symlinks, [])
 
+set(:backups, [])
+
 set(:use_sudo, false)
 
 # Sets the mongrel_cluster config location. Default: #{shared_path}/config/mongrel_cluster.yml
