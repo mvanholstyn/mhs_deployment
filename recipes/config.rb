@@ -47,6 +47,7 @@ set(:deploy_to) { "/var/www/#{application}/#{rails_env}" }
 set(:symlinks, [])
 
 set(:backups, [])
+set(:backup_on_deploy, true)
 
 set(:use_sudo, false)
 
