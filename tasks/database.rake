@@ -16,6 +16,7 @@ namespace :db do
 
   desc "Run the mysql shell for the current environment using the configuration defined in database.yml"
   task :shell do
+    require 'yaml'
     configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
     case configuration["adapter"]
       when "mysql"
