@@ -1,4 +1,3 @@
-# TODO: SVN integration
 namespace :gems do
   task :freeze do
     raise "No gem specified" unless gem_name = ENV['GEM']
