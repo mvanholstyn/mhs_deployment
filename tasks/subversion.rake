@@ -38,3 +38,29 @@ def svn_messages_since(start_date, user = nil)
   end    
   messages.uniq
 end
+
+# namespace :svn do
+#   desc "See a list of the svn messages.  Filter them by user with u=user (ex: u=domelia)."
+#   task(:messages) do
+#     require File.expand_path(File.dirname(__FILE__) + "/../../config/environment.rb") 
+#     raise "Please specify a start revision.\nExample usage: svn:messages r=473" unless ENV['r']
+#     
+#     puts "* " + svn_messages(ENV['r']).join("\n* ")  
+#   end
+# 
+#   desc "See a list of the svn messages since the last deployment."
+#   task(:deployment_message) do
+#     revision = `cap svn:latest_commit -q`.strip
+#     ENV['r'] = (`cap svn:latest_deployment -q`.strip.to_i + 1).to_s
+#     puts "Deployment (Revision #{revision})"
+#     puts "I deployed the latest. It includes:"
+#     puts 
+#     Rake::Task['svn:messages'].invoke
+#     puts
+#   end
+#   
+#   desc "Add all new files to subversion"
+#   task :add do
+#      system "svn status | grep '^\?' | sed -e 's/? *//' | sed -e 's/ /\ /g' | xargs svn add"
+#   end
+# end
