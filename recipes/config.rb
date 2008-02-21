@@ -2,7 +2,7 @@ require 'etc'
 # Load the mongrel_cluster tasks
 require 'mongrel_cluster/recipes'
 
-# You must set :repository_path and :application in your Capfile
+# You must set :application, :repository_host, and :server in your Capfile
 
 # Sets the RAILS_ENV for this deployment. Default: staging
 set(:rails_env, ENV["RAILS_ENV"] ? ENV["RAILS_ENV"].to_sym : :staging)
@@ -24,6 +24,13 @@ set(:repository_host) { abort "Please specify the host for your repository, set 
 
 # Sets the repository to deploy from. Default: http://#{repository_host}/#{application}/#{repository_path}
 set(:repository) { "http://#{repository_host}/#{application}/#{repository_path}" }
+
+# Sets the server. This MUST be set.
+# set(:server) { abort "Please specify the server to deploy to, set :server, 'example.com'" }
+
+role(:web)                    { server }
+role(:app),                   { server }
+role(:db, :primary => true),  { server }
 
 # Sets the user to deploy as. Default: #{application}
 set(:user) { application }
