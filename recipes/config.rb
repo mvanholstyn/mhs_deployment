@@ -28,9 +28,9 @@ set(:repository) { "http://#{repository_host}/#{application}/#{repository_path}"
 # Sets the server. This MUST be set.
 # set(:server) { abort "Please specify the server to deploy to, set :server, 'example.com'" }
 
-role(:web)                  { server }
-role(:app)                  { server }
-role(:db, :primary => true) { server }
+# role(:web)                  { server }
+# role(:app)                  { server }
+# role(:db, :primary => true) { server }
 
 # Sets the user to deploy as. Default: #{application}
 set(:user) { application }
