@@ -9,7 +9,7 @@ namespace :backup do
   
   task :latest => :directory do
     last = Dir["#{ENV['BACKUP_DIR']}/*/"].sort.last
-    puts ENV['BACKUP_VERSION'] ||= File.basename(last) if last
+    ENV['BACKUP_VERSION'] ||= File.basename(last) if last
   end
 
   task :create do

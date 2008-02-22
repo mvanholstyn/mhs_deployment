@@ -52,10 +52,16 @@ namespace :db do
     end
   
     desc "Creates a backup of the database."
-    task :create => [:environment, 'db:fixtures:dump', 'db:schema:dump']
+    task :create => :environment do
+      Rake::Task["db:schema:dump"].invoke
+      Rake::Task["db:fixtures:dump"].invoke
+    end
 
     desc "Restores a backup of the database."
-    task :restore => ["backup:latest", :environment, 'db:schema:load', 'db:fixtures:load']
+    task :restore => ["backup:latest", :environment] do
+      Rake::Task["db:schema:load"].invoke
+      Rake::Task["db:fixtures:load"].invoke
+    end
   end
 end
 
@@ -98,7 +104,7 @@ namespace :db do
         File.open("#{fixtures_dir}/#{table_name}.yml", 'w' ) do |file|
           while !(data = ActiveRecord::Base.connection.select_all(sql % [table_name, limit, offset])).empty?
             data.each do |record|
-              file.write({"#{table_name}_#{i.succ!}" => record}.to_yaml.gsub(/^---.*\n/, ''))
+              file.write({"#{table_name}_#{i.succ!}" => record}.to_yaml.gsub(/^---.*\n/, '').gsub("<%[^%]", "<%%").gsub("[^%]%>", "%%>"))
             end
             offset += limit
           end
