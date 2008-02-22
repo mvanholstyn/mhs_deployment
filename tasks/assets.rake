@@ -13,7 +13,7 @@ namespace :assets do
     end
     
     desc "Restores a backup of the assets."
-    task :restore => ["backup:dirname", "backup:version"] do
+    task :restore => ["backup:latest"] do
       backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}"
 
       ENV["BACKUPS"].to_s.split(",").each do |backup|

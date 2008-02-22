@@ -42,11 +42,6 @@ namespace :db do
   end
   
   namespace :backup do
-    task :latest => "backup:directory" do
-      last = Dir["#{ENV['BACKUP_DIR']}/*/"].sort.last
-      puts ENV['BACKUP_VERSION'] ||= File.basename(last) if last
-    end
-  
     task :environment => ["backup:directory", "backup:version"] do
       db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
       fixtures_backup_directory = "#{db_backup_directory}/fixtures"
@@ -60,7 +55,7 @@ namespace :db do
     task :create => [:environment, 'db:fixtures:dump', 'db:schema:dump']
 
     desc "Restores a backup of the database."
-    task :restore => [:latest, :environment, 'db:schema:load', 'db:fixtures:load']
+    task :restore => ["backup:latest", :environment, 'db:schema:load', 'db:fixtures:load']
   end
 end
 

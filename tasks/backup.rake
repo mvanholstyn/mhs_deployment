@@ -7,6 +7,11 @@ namespace :backup do
     ENV['BACKUP_VERSION'] ||= Time.now.utc.strftime("%Y%m%d%H%M%S")
   end
   
+  task :latest => :directory do
+    last = Dir["#{ENV['BACKUP_DIR']}/*/"].sort.last
+    puts ENV['BACKUP_VERSION'] ||= File.basename(last) if last
+  end
+
   task :create do
     Rake::Task["db:backup:create"].invoke
     Rake::Task["assets:backup:create"].invoke
