@@ -23,8 +23,8 @@ namespace :assets do
         destination = backup
         if File.exist?(target)
           if File.symlink?(destination)
-            FileUtils.rm_rf File.join(destination, "*")
-            # FileUtils.cp_r target, destination
+            Dir["#{destination}/*"].each { |file| FileUtils.rm_rf file }
+            Dir["#{target}/*"].each { |file| FileUtils.cp_r file, destination }
           else
             FileUtils.rm_rf destination
             FileUtils.mkdir_p File.dirname(destination)
