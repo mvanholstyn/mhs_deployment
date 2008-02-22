@@ -11,4 +11,9 @@ namespace :backup do
     Rake::Task["db:backup:create"].invoke
     Rake::Task["assets:backup:create"].invoke
   end
+  
+  task :restore do
+    Rake::Task["db:backup:restore"].invoke
+    Rake::Task["assets:backup:restore"].invoke
+  end
 end

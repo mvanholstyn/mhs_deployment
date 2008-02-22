@@ -11,5 +11,18 @@ namespace :assets do
         end
       end
     end
+    
+    desc "Restores a backup of the assets."
+    task :restore => ["backup:dirname", "backup:version"] do
+      backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}"
+
+      ENV["BACKUPS"].to_s.split(",").each do |backup|
+        if File.exist?(backup)
+          FileUtils.rm_rf backup
+          FileUtils.mkdir_p backup
+          FileUtils.cp_r "#{backup_directory}/#{File.dirname(backup)}", backup
+        end
+      end      
+    end
   end
 end
