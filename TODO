@@ -1,5 +1,4 @@
 Wingnut:
- * Add :sql format database backup
  * restore backup (locally, staging)
     task :remote_to_local, :roles => :db, :only => {:primary => true} do
       latest = capture("cd #{current_path}; rake -s backup:latest BACKUP_DIR=#{backup_path}").strip
