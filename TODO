@@ -1,5 +1,11 @@
 Wingnut:
- * restore backup (locally, staging)
+ * Add ability to push backup somewhere else (ftp)
+ * crontab for backups
+
+Long Term:
+ * revisit backup_on_deploy
+ * better way to specify restoration from a different environment
+ * restore backup (locally)
     task :remote_to_local, :roles => :db, :only => {:primary => true} do
       latest = capture("cd #{current_path}; rake -s backup:latest BACKUP_DIR=#{backup_path}").strip
       run "tar -C #{backup_path} -czf #{backup_path}/#{latest}.tar.gz #{latest}"
@@ -10,12 +16,6 @@ Wingnut:
       `rm backups/#{latest}.tar.gz`
       `rake backup:restore`
     end
- * Add ability to push backup somewhere else (ftp)
- * crontab for backups
- * revisit backup_on_deploy
-
-Long Term:
- * better way to specify restoration from a different environment
  * Cleanup task for backups
  * setup god/monit scripts
  * gems/dependencies
