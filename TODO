@@ -15,6 +15,7 @@ Wingnut:
  * revisit backup_on_deploy
 
 Long Term:
+ * better way to specify restoration from a different environment
  * Cleanup task for backups
  * setup god/monit scripts
  * gems/dependencies
