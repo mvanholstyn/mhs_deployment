@@ -26,9 +26,16 @@ namespace :db do
   end
   
   namespace :backup do
-    desc "Creates a back of the database."
+    desc "Creates a backup of the database."
     task :create, :roles => :db, :only => {:primary => true} do
-      run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIR=#{shared_path}/backups"
+      ENV['BACKUP_DIR'] ||= "#{shared_path}/backups"
+      run "cd #{current_path} && rake #{rails_env} db:backup:create BACKUP_DIR=#{ENV['BACKUP_DIR']}"
+    end
+    
+    desc "Restores a backup of the database."
+    task :restore, :roles => :db, :only => {:primary => true} do
+      ENV['BACKUP_DIR'] ||= "#{shared_path}/backups"
+      run "cd #{current_path} && rake #{rails_env} db:backup:restore BACKUP_DIR=#{ENV['BACKUP_DIR']}"
     end
   end
 end
