@@ -53,6 +53,8 @@ namespace :db do
     
     namespace :create do
       task :sql => ["backup:directory", "backup:version"] do
+        require 'yaml'
+        
         db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
         FileUtils.mkdir_p db_backup_directory
 
@@ -91,6 +93,8 @@ namespace :db do
     
     namespace :restore do
       task :sql => ["backup:directory", "backup:latest"] do
+        require 'yaml'
+        
         db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
 
         configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
