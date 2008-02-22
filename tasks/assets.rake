@@ -5,22 +5,26 @@ namespace :assets do
       backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}"
 
       ENV["BACKUPS"].to_s.split(",").each do |backup|
-        if File.exist?(backup)
-          FileUtils.mkdir_p "#{backup_directory}/#{File.dirname(backup)}"
-          FileUtils.cp_r backup, "#{backup_directory}/#{File.dirname(backup)}"
+        target = backup
+        destination = "#{backup_directory}/#{backup}"
+        if File.exist?(target)
+          FileUtils.mkdir_p File.dirname(destination)
+          FileUtils.cp_r target, destination
         end
       end
     end
     
     desc "Restores a backup of the assets."
-    task :restore => ["backup:latest"] do
+    task :restore => ["backup:directory", "backup:latest"] do
       backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}"
 
       ENV["BACKUPS"].to_s.split(",").each do |backup|
-        if File.exist?(backup)
-          FileUtils.rm_rf backup
-          FileUtils.mkdir_p backup
-          FileUtils.cp_r "#{backup_directory}/#{File.dirname(backup)}", backup
+        target = "#{backup_directory}/#{backup}"
+        destination = backup
+        if File.exist?(target)
+          FileUtils.rm_rf destination
+          FileUtils.mkdir_p File.dirname(destination)
+          FileUtils.cp_r target, destination
         end
       end      
     end
