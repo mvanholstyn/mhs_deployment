@@ -45,13 +45,13 @@ namespace :db do
     task :format do
       ENV['FORMAT'] ||= "sql"
     end
+
+    desc "Creates a backup of the database."
+    task :create => "db:backup:format" do
+      Rake::Task["db:backup:create:#{ENV['FORMAT']}"].invoke
+    end
     
-    namsepace :create do
-      desc "Creates a backup of the database."
-      task :default => "db:backup:format" do
-        Rake::Task["db:backup:create:#{ENV['FORMAT']}"].invoke
-      end
-      
+    namespace :create do
       task :sql => ["backup:directory", "backup:version"] do
         db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
         FileUtils.mkdir_p db_backup_directory
@@ -84,12 +84,12 @@ namespace :db do
       end
     end
     
-    namsepace :restore do
-      desc "Restores a backup of the database."
-      task :default => "db:backup:format" do
-        Rake::Task["db:backup:restore:#{ENV['FORMAT']}"].invoke
-      end
-      
+    desc "Restores a backup of the database."
+    task :restore => "db:backup:format" do
+      Rake::Task["db:backup:restore:#{ENV['FORMAT']}"].invoke
+    end
+    
+    namespace :restore do
       task :sql => ["backup:directory", "backup:latest"] do
         db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
 

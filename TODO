@@ -1,4 +1,5 @@
 Wingnut:
+ * Add :sql format database backup
  * restore backup (locally, staging)
     task :remote_to_local, :roles => :db, :only => {:primary => true} do
       latest = capture("cd #{current_path}; rake -s backup:latest BACKUP_DIR=#{backup_path}").strip
@@ -16,7 +17,6 @@ Wingnut:
 
 Long Term:
  * Cleanup task for backups
- * Add :sql format database backup
  * setup god/monit scripts
  * gems/dependencies
  * get db:shell working
