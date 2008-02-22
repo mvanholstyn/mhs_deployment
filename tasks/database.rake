@@ -104,7 +104,10 @@ namespace :db do
         File.open("#{fixtures_dir}/#{table_name}.yml", 'w' ) do |file|
           while !(data = ActiveRecord::Base.connection.select_all(sql % [table_name, limit, offset])).empty?
             data.each do |record|
-              file.write({"#{table_name}_#{i.succ!}" => record}.to_yaml.gsub(/^---.*\n/, '').gsub("<%[^%]", "<%%").gsub("[^%]%>", "%%>"))
+              yaml_record = {"#{table_name}_#{i.succ!}" => record}.to_yaml.
+                gsub(/^---.*\n/, '').                               # Clean out header
+                gsub(/<%([^%])/, '<%%\1').gsub(/([^%])%>/, '\1%%>') # Escape ERB
+              file.write(yaml_record)
             end
             offset += limit
           end
