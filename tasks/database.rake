@@ -42,25 +42,81 @@ namespace :db do
   end
   
   namespace :backup do
-    task :environment => ["backup:directory", "backup:version"] do
-      db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
-      fixtures_backup_directory = "#{db_backup_directory}/fixtures"
-      FileUtils.mkdir_p db_backup_directory
-      FileUtils.mkdir_p fixtures_backup_directory
-      ENV['FIXTURES_DIR'] = fixtures_backup_directory
-      ENV['SCHEMA'] = "#{db_backup_directory}/schema.rb"
+    task :format do
+      ENV['FORMAT'] ||= "sql"
     end
-  
-    desc "Creates a backup of the database."
-    task :create => :environment do
-      Rake::Task["db:schema:dump"].invoke
-      Rake::Task["db:fixtures:dump"].invoke
-    end
+    
+    namsepace :create do
+      desc "Creates a backup of the database."
+      task :default => "db:backup:format" do
+        Rake::Task["db:backup:create:#{ENV['FORMAT']}"].invoke
+      end
+      
+      task :sql => ["backup:directory", "backup:version"] do
+        db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
+        FileUtils.mkdir_p db_backup_directory
 
-    desc "Restores a backup of the database."
-    task :restore => ["backup:latest", :environment] do
-      Rake::Task["db:schema:load"].invoke
-      Rake::Task["db:fixtures:load"].invoke
+        configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
+        case configuration["adapter"]
+          when "mysql"
+            command = ["mysqldump"]
+            command << "-u#{configuration['username']}"   if configuration['username']
+            command << "-p'#{configuration['password']}'" if configuration['password']
+            command << "-h#{configuration['host']}"       if configuration['host']
+            command << "-P#{configuration['port']}"       if configuration['port']
+            command << configuration['database']          if configuration['database']
+            command << "> #{db_backup_directory}/dump.sql"
+          else
+            raise "not supported for this database type"
+        end
+        system command.join(" ")
+      end
+      
+      task :ruby => ["backup:directory", "backup:version"] do
+        db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
+        ENV['SCHEMA'] ||= "#{db_backup_directory}/schema.rb"
+        ENV['FIXTURES_DIR'] ||= "#{db_backup_directory}/fixtures"
+
+        FileUtils.mkdir_p ENV['FIXTURES_DIR']
+
+        Rake::Task["db:schema:dump"].invoke
+        Rake::Task["db:fixtures:dump"].invoke
+      end
+    end
+    
+    namsepace :restore do
+      desc "Restores a backup of the database."
+      task :default => "db:backup:format" do
+        Rake::Task["db:backup:restore:#{ENV['FORMAT']}"].invoke
+      end
+      
+      task :sql => ["backup:directory", "backup:latest"] do
+        db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
+
+        configuration = YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))[RAILS_ENV]
+        case configuration["adapter"]
+          when "mysql"
+            command = ["mysql"]
+            command << "-u#{configuration['username']}"   if configuration['username']
+            command << "-p'#{configuration['password']}'" if configuration['password']
+            command << "-h#{configuration['host']}"       if configuration['host']
+            command << "-P#{configuration['port']}"       if configuration['port']
+            command << configuration['database']          if configuration['database']
+            command << "< #{db_backup_directory}/dump.sql"
+          else
+            raise "not supported for this database type"
+        end
+        system command.join(" ")
+      end
+      
+      task :ruby => ["backup:directory", "backup:latest"] do
+        db_backup_directory = "#{ENV['BACKUP_DIR']}/#{ENV['BACKUP_VERSION']}/db"
+        ENV['SCHEMA'] ||= "#{db_backup_directory}/schema.rb"
+        ENV['FIXTURES_DIR'] ||= "#{db_backup_directory}/fixtures"
+
+        Rake::Task["db:schema:load"].invoke
+        Rake::Task["db:fixtures:load"].invoke
+      end
     end
   end
 end
