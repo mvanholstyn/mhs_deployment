@@ -22,9 +22,14 @@ namespace :assets do
         target = "#{backup_directory}/#{backup}"
         destination = backup
         if File.exist?(target)
-          FileUtils.rm_rf destination
-          FileUtils.mkdir_p File.dirname(destination)
-          FileUtils.cp_r target, destination
+          if File.symlink?(destination)
+            FileUtils.rm_rf File.join(destination, "*")
+            # FileUtils.cp_r target, destination
+          else
+            FileUtils.rm_rf destination
+            FileUtils.mkdir_p File.dirname(destination)
+            FileUtils.cp_r target, destination
+          end
         end
       end      
     end
