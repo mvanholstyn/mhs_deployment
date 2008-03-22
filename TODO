@@ -1,3 +1,6 @@
+* faster deploy (remote cache)
+* git
+
 Wingnut:
  * Add ability to push backup somewhere else (ftp)
  * crontab for backups
