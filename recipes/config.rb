@@ -25,6 +25,8 @@ set(:repository_host) { abort "Please specify the host for your repository, set 
 # Sets the repository to deploy from. Default: http://#{repository_host}/#{application}/#{repository_path}
 set(:repository) { "http://#{repository_host}/#{application}/#{repository_path}" }
 
+set(:deploy_via, :remote_cache)
+
 # Sets the server. This MUST be set.
 # set(:server) { abort "Please specify the server to deploy to, set :server, 'example.com'" }
 # role(:web)                  { server }
