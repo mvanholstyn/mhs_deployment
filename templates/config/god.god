@@ -1,9 +1,12 @@
+# mongrel_rails start -d -e production -a 127.0.0.1 -c /var/www/wingnut/production/current --user wingnut --group wingnut -p 8000 -P tmp/pids/mongrel.8000.pid                                     -l log/mongrel.8000.log
+# mongrel_rails start -d -e production              -c /var/www/wingnut/production/current                                -p 8003 -P /var/www/wingnut/production/current/tmp/pids/mongrel.8003.pid
+
 # run with:  god -c /path/to/god.god
 
-APPLICATION = <%= application %>
-SERVER = <%= server %>
-RAILS_ENV = <%= rails_env %>
-RAILS_ROOT = <%= current_path %>
+APPLICATION = <%= application.inspect %>
+SERVER = <%= "TODO".inspect %>
+RAILS_ENV = <%= rails_env.inspect %>
+RAILS_ROOT = <%= current_path.inspect %>
 PORTS = <%= 
   ports = []
   mongrel_servers.times do |i| 
@@ -11,7 +14,7 @@ PORTS = <%=
   end
   ports.inspect
 %>
-MONGREL_ENV = <%= mongrel_environment %>
+MONGREL_ENV = <%= mongrel_environment.inspect %>
 
 God::Contacts::Email.message_settings = {
   :from => "god@#{SERVER}"
@@ -36,10 +39,10 @@ PORTS.each do |port|
     w.uid = APPLICATION
     w.gid = APPLICATION
     w.interval = 30.seconds
-    w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} -e #{MONGREL_ENV} -P #{RAILS_ROOT}/log/mongrel.#{port}.pid -d"
-    w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
-    w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
-    w.pid_file = File.join(RAILS_ROOT, "log/mongrel.#{port}.pid")
+    w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} -e #{MONGREL_ENV} -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid -d"
+    w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
+    w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
+    w.pid_file = File.join(RAILS_ROOT, "tmp/pids/mongrel.#{port}.pid")
     w.start_grace = 10.seconds
     w.restart_grace = 10.seconds
  
