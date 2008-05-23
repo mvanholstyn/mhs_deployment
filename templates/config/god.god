@@ -1,5 +1,5 @@
-# mongrel_rails start -d -e production -a 127.0.0.1 -c /var/www/wingnut/production/current --user wingnut --group wingnut -p 8000 -P tmp/pids/mongrel.8000.pid                                     -l log/mongrel.8000.log
-# mongrel_rails start -d -e production              -c /var/www/wingnut/production/current                                -p 8003 -P /var/www/wingnut/production/current/tmp/pids/mongrel.8003.pid
+# mongrel_rails start -d -e production -a 127.0.0.1 -c /var/www/wingnut/production/current --user wingnut --group wingnut -p 8000 -P tmp/pids/mongrel.8000.pid  -l log/mongrel.8000.log
+# mongrel_rails start -d -e production              -c /var/www/wingnut/production/current                                -p 8003 -P tmp/pids/mongrel.8003.pid  -l log/mongrel.8003.log
 
 # run with:  god -c /path/to/god.god
 
@@ -39,7 +39,7 @@ PORTS.each do |port|
     w.uid = APPLICATION
     w.gid = APPLICATION
     w.interval = 30.seconds
-    w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} -e #{MONGREL_ENV} -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid -d"
+    w.start = "mongrel_rails start -d -e #{MONGREL_ENV} -c #{RAILS_ROOT} -p #{port} -P tmp/pids/mongrel.#{port}.pid -l log/mongrel.#{port}.log"
     w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
     w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
     w.pid_file = File.join(RAILS_ROOT, "tmp/pids/mongrel.#{port}.pid")
