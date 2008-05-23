@@ -6,4 +6,8 @@ namespace :god do
     result = ERB.new(template).result(binding)
     put result, "#{shared_path}/config/god.god", :mode => 0644
   end
+
+  task :restart do
+    run "god restart #{rails_env}-mongrels"
+  end
 end

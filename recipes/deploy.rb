@@ -9,7 +9,7 @@ namespace :deploy do
       migrate
     end
 
-    restart
+    god.restart
     web.enable
     cleanup
   end
