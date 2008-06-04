@@ -21,13 +21,11 @@ Long Term:
     end
  * Cleanup task for backups
  * setup god/monit scripts
- * gems/dependencies
  * get db:shell working
  * create database
  * create logrotate
  * create deploy_to (as root)
  * apache:configure symlink (as root)
- * make gem freezing svn aware
  
 Next Release:
  * enable simplified role setting
