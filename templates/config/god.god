@@ -3,27 +3,12 @@
 
 # run with:  god -c /path/to/god.god
 
-APPLICATION = <%= application.inspect %>
-SERVER = <%= "TODO".inspect %>
-RAILS_ENV = <%= rails_env.inspect %>
-RAILS_ROOT = <%= current_path.inspect %>
-PORTS = <%= 
-  ports = []
-  mongrel_servers.times do |i| 
-    ports << mongrel_port + i
-  end
-  ports.inspect
-%>
-MONGREL_ENV = <%= mongrel_environment.inspect %>
-
 God::Contacts::Email.message_settings = {
-  :from => "god@#{SERVER}"
+  :from => "god"
 }
  
 God::Contacts::Email.server_settings = {
-  :address => 'localhost',
-  :port => 25,
-  :domain => SERVER
+  :address => 'localhost', :port => 25
 }
 
 God.contact(:email) do |c|
@@ -31,18 +16,17 @@ God.contact(:email) do |c|
   c.email = 'mvanholstyn@mutuallyhuman.com'
 end
 
-# Watches for Trunk mongrels
-PORTS.each do |port|
+[<%= mongrel.ports.join(',') %>].each do |port|
   God.watch do |w|
-    w.name = "#{RAILS_ENV}-mongrel-#{port}"
-    w.group = "#{RAILS_ENV}-mongrels"
-    w.uid = APPLICATION
-    w.gid = APPLICATION
+    w.name = "<%= rails_env %>-mongrel-#{port}"
+    w.group = "<%= rails_env %>-mongrels"
+    w.uid = "<%= mongrel_user %>"
+    w.gid = "<%= mongrel_group %>"
     w.interval = 30.seconds
-    w.start = "mongrel_rails start -d -e #{MONGREL_ENV} -c #{RAILS_ROOT} -p #{port} -P tmp/pids/mongrel.#{port}.pid -l log/mongrel.#{port}.log"
-    w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
-    w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/tmp/pids/mongrel.#{port}.pid"
-    w.pid_file = File.join(RAILS_ROOT, "tmp/pids/mongrel.#{port}.pid")
+    w.start = "mongrel_rails start -d -e <%= mongrel_environment %> -c <%= current_path %> -p #{port} -P tmp/pids/mongrel.#{port}.pid -l log/mongrel.#{port}.log"
+    w.stop = "mongrel_rails stop -P <%= current_path %>/tmp/pids/mongrel.#{port}.pid"
+    w.restart = "mongrel_rails restart -P <%= current_path %>/tmp/pids/mongrel.#{port}.pid"
+    w.pid_file = File.join("<%= current_path %>", "tmp/pids/mongrel.#{port}.pid")
     w.start_grace = 10.seconds
     w.restart_grace = 10.seconds
  
