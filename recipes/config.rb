@@ -42,11 +42,11 @@ set(:mongrel_user) { application }
 # Sets the group to run mongrel processes as
 set(:mongrel_group) { application }
 
-# Sets the SCM user to deploy as. Default: #{Etc.getlogin}
-set(:scm_username, Etc.getlogin)
-
 # Prompt for SCM password
 set(:scm_prefer_prompt, true)
+
+# Cache SCM password
+set(:scm_auth_cache, true)
 
 # Sets the location to deploy to. Default: /var/www/#{application}/#{rails_env}
 set(:deploy_to) { "/var/www/#{application}/#{rails_env}" }
