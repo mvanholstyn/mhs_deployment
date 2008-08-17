@@ -2,7 +2,7 @@ require 'etc'
 # Load the mongrel_cluster tasks
 require 'mongrel_cluster/recipes'
 
-# You must set :application, :repository_host, and :server in your Capfile
+# You must set :application, :repository, and :server in your Capfile
 
 # Sets the RAILS_ENV for this deployment. Default: staging
 set(:rails_env, ENV["RAILS_ENV"] ? ENV["RAILS_ENV"].to_sym : :staging)
@@ -10,20 +10,9 @@ set(:rails_env, ENV["RAILS_ENV"] ? ENV["RAILS_ENV"].to_sym : :staging)
 # Sets the environment for the mongrel cluster
 set(:mongrel_environment) { rails_env }
 
-# Sets the location to deploy from. Default: trunk
-if tag = ENV["TAG"]
-  set(:repository_path, "tags/#{tag}")
-elsif branch = ENV["BRANCH"]
-  set(:repository_path, "branches/#{branch}")
-else
-  set(:repository_path, :trunk)
+if branch = ENV["BRANCH"]
+  set(:branch, branch)
 end
-
-# Sets the repository host. This MUST be set.
-set(:repository_host) { abort "Please specify the host for your repository, set :repository_host, 'svn.example.com'" }
-
-# Sets the repository to deploy from. Default: http://#{repository_host}/#{application}/#{repository_path}
-set(:repository) { "http://#{repository_host}/#{application}/#{repository_path}" }
 
 set(:deploy_via, :remote_cache)
 
@@ -41,6 +30,8 @@ set(:mongrel_user) { application }
 
 # Sets the group to run mongrel processes as
 set(:mongrel_group) { application }
+
+set :scm, :git
 
 # Prompt for SCM password
 set(:scm_prefer_prompt, true)
