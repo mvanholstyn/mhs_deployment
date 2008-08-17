@@ -33,12 +33,6 @@ set(:mongrel_group) { application }
 
 set :scm, :git
 
-# Prompt for SCM password
-set(:scm_prefer_prompt, true)
-
-# Cache SCM password
-set(:scm_auth_cache, true)
-
 # Sets the location to deploy to. Default: /var/www/#{application}/#{rails_env}
 set(:deploy_to) { "/var/www/#{application}/#{rails_env}" }
 
