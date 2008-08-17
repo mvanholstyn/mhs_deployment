@@ -1,9 +1,7 @@
-* faster deploy (remote cache)
-* git
-
 Wingnut:
  * Add ability to push backup somewhere else (ftp)
  * crontab for backups
+ * passenger
 
 Long Term:
  * revisit backup_on_deploy
@@ -20,7 +18,6 @@ Long Term:
       `rake backup:restore`
     end
  * Cleanup task for backups
- * setup god/monit scripts
  * get db:shell working
  * create database
  * create logrotate
