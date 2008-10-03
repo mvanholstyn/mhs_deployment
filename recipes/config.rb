@@ -9,6 +9,7 @@
 set(:rails_env, :staging)
 set(:scm, :git)
 set(:deploy_via, :remote_cache)
+set(:branch, :master)
 set(:user) { application }
 set(:deploy_to) { "/home/#{user}/#{application}/#{rails_env}/#{branch}" }
 set(:symlinks, [])
