@@ -1,6 +1,8 @@
 <%= rails_env %>:
   adapter: mysql
+  encoding: utf8
   database: <%= application %>_<%= rails_env %>_<%= branch %>
+  pool: 5
   username: <%= application %>
   password: <%= Capistrano::CLI.password_prompt("DB Password: ") %>
   host: localhost
