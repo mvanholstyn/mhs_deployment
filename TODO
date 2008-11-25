@@ -1,9 +1,6 @@
-Wingnut:
+Long Term:
  * Add ability to push backup somewhere else (ftp)
  * crontab for backups
- * passenger
-
-Long Term:
  * revisit backup_on_deploy
  * better way to specify restoration from a different environment
  * restore backup (locally)
@@ -21,7 +18,9 @@ Long Term:
  * get db:shell working
  * create database
  * create logrotate
- * create deploy_to (as root)
+ * create symlinks (uploades, other configs)
+ * apache:configure for passenger
+ * apache:configure no www => www, page caching, remvoe dispatch/htaccess
  * apache:configure symlink (as root)
  
 Next Release:
