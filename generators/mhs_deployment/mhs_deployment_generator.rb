@@ -1,4 +1,4 @@
-class LwtDeploymentGenerator < Rails::Generator::Base
+class MhsDeploymentGenerator < Rails::Generator::Base
   def manifest
     record do |m|
       m.directory 'config'
