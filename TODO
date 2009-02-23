@@ -1,3 +1,6 @@
+* create symlinks (uploades, other configs) OR WARM
+
+
 Long Term:
  * Add ability to push backup somewhere else (ftp)
  * crontab for backups
@@ -18,7 +21,6 @@ Long Term:
  * get db:shell working
  * create database
  * create logrotate
- * create symlinks (uploades, other configs)
  * apache:configure for passenger
  * apache:configure no www => www, page caching, remvoe dispatch/htaccess
  * apache:configure symlink (as root)
