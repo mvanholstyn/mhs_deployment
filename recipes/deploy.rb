@@ -14,12 +14,12 @@ namespace :deploy do
     cleanup
   end
   
-  desc "Symlinks config/database.yml and all entries in symlinks from \#{shared_path}/\#{symlink} to \#{current_path}/\#{symlink}."
+  desc "Symlinks config/database.yml and all entries in symlinks from \#{shared_path}/\#{symlink} to \#{release_path}/\#{symlink}."
   task :symlink_extras, :except => { :no_release => true } do
-    run "rm -f #{current_path}/config/database.yml && ln -s #{shared_path}/config/database.yml #{current_path}/config/database.yml"
+    run "rm -f #{release_path}/config/database.yml && ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     symlinks.each do |symlink|
-      run "rm -f #{current_path}/#{symlink} && ln -s #{shared_path}/#{symlink} #{current_path}/#{symlink}"
+      run "rm -f #{release_path}/#{symlink} && ln -s #{shared_path}/#{symlink} #{release_path}/#{symlink}"
     end 
   end
-  after "deploy:symlink", "deploy:symlink_extras"
+  after "deploy:update_code", "deploy:symlink_extras"
 end
