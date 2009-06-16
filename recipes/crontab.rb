@@ -11,6 +11,7 @@
 # end
 
 # TODO: Make this remove when starting, add when finished?
+# TODO: Make this not fail when no cron
 namespace :crontab do
   task :install, :roles => :db do
     run "cd #{release_path} && whenever --set environment=#{rails_env} --update-crontab #{application}-#{rails_env}-#{branch}"
