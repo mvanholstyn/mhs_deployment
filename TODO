@@ -1,5 +1,5 @@
-* create symlinks (uploades, other configs) OR WARM
-
+* create symlinks (uploades, other configs) OR WARN
+* gems
 
 Long Term:
  * Add ability to push backup somewhere else (ftp)
