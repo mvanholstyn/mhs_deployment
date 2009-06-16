@@ -1,5 +1,6 @@
 * create symlinks (uploades, other configs) OR WARN
 * gems
+* crontab
 
 Long Term:
  * Add ability to push backup somewhere else (ftp)
