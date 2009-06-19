@@ -16,3 +16,5 @@ set(:symlinks, [])
 set(:backups, [])
 set(:backup_on_deploy, true)
 set(:use_sudo, false)
+
+ssh_options[:forward_agent] = true
